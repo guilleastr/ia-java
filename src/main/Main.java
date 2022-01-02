@@ -2,26 +2,29 @@ package main;
 
 import graph.*;
 
-import java.beans.VetoableChangeListener;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
 
     public static void main(String[] args) {
         Graph graph = createGraph(); //creamos el grafo
-        List<Vertex> vertices = graph.getAdjVertices("GREEN DISTRIBUTION");
-        List<Integer> distancias = graph.getAdjDistanciaVertices("GREEN DISTRIBUTION");
-        for (int i=0;i<vertices.size();i++){
-            System.out.println(vertices.get(i).getRua() + "  -  " +  distancias.get(i));
+        List<Node> nodes= graph.getNodes();
+        for (int i=0;i<nodes.size()-1;i++){
+            System.out.println(nodes.get(i).getLabel());
 
         }
+
+        int[] values= graph.dijkstra("AVDA BRAGA");
+
+        System.out.println(Arrays.toString(values));
 
 
 
     }
 
     public static Graph createGraph() {
-        Graph graph = new Graph();
+        Graph graph = new Graph(9);
         String r1 = "AVDA BRAGA";
         String r2 = "AVDA PARIS";
         String r3 = "AVDA LIBERDADE";
@@ -31,15 +34,15 @@ public class Main {
         String r7 = "RUA DE MINHO";
         String r8 = "RUA ESPANHA";
         String r9 = "GREEN DISTRIBUTION";
-        graph.addVertex(r1);
-        graph.addVertex(r2);
-        graph.addVertex(r3);
-        graph.addVertex(r4);
-        graph.addVertex(r5);
-        graph.addVertex(r6);
-        graph.addVertex(r7);
-        graph.addVertex(r8);
-        graph.addVertex(r9);
+        graph.addNode(r1);
+        graph.addNode(r2);
+        graph.addNode(r3);
+        graph.addNode(r4);
+        graph.addNode(r5);
+        graph.addNode(r6);
+        graph.addNode(r7);
+        graph.addNode(r8);
+        graph.addNode(r9);
         graph.addEdge(r1, r2,12);
         graph.addEdge(r1, r3,20);
         graph.addEdge(r2, r5,30);
