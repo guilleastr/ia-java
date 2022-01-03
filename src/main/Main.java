@@ -1,5 +1,6 @@
 package main;
 
+import Timer.Timer;
 import graph.*;
 import printer.PrettyPrinter;
 import printer.PrettyPrinterInteger;
@@ -11,7 +12,11 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Graph graph = createGraph(); //creamos el grafo
+        Timer timer= new Timer();
+
+        timer.run();
+
+        /*Graph graph = createGraph(); //creamos el grafo
         List<Node> nodes= graph.getNodes();
         for (int i=0;i<nodes.size();i++){
             System.out.println(nodes.get(i).getLabel());
@@ -24,7 +29,7 @@ public class Main {
 
         System.out.println(graph.BFS("AVDA BRAGA","RUA FONTE"));
 
-        /*graph.floyd();
+        *//*graph.floyd();
         PrettyPrinter p= new PrettyPrinter(System.out,"NaN");
         PrettyPrinterInteger pi= new PrettyPrinterInteger(System.out,-1);
 
