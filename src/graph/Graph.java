@@ -21,6 +21,7 @@ public class Graph {
     public Graph(int size) {
         this.matrix = new int[size][size];
         this.nodes = new ArrayList<>();
+
     }
 
     public void addNode(String label) {
@@ -270,7 +271,7 @@ public class Graph {
 
     public int BFS(String origin, String destin) {
         int current = this.getNodePos(origin);
-        int finish=this.getNodePos(destin);
+        int finish = this.getNodePos(destin);
         int distance = -1;
         boolean visited[] = initVisitedForSearch(origin);
 
@@ -285,18 +286,13 @@ public class Graph {
         while (!queue.isEmpty()) {
             // Dequeue a vertex from queue and print it
             current = queue.poll();
-            // Get all adjacent vertices of the dequeued vertex s
-            // If a adjacent has not been visited, then mark it
-            // visited and enqueue it
-            Iterator<Integer> i = Arrays.stream(this.matrix[current]).iterator();
+
+            visited[current] = true;
 
             for (int n = 0; n < this.getSize(); n++) {
-                //int n = n.next();
-
-                if (!visited[n] && current != n) {
-                    if (distances[n] >= distances[current] + this.matrix[current][n]&& distances[current] + this.matrix[current][n]>0) {
+                if (!visited[n] && distances[n] > 0) {
+                    if (distances[n] >= distances[current] + this.matrix[current][n] && this.matrix[current][n] >0) {
                         distances[n] = distances[current] + this.matrix[current][n];
-                        visited[n] = true;
                         queue.add(n);
                     }
                 }
@@ -305,6 +301,7 @@ public class Graph {
         }
         return distances[finish];
     }
+
 
     public int DFS(String origin, String destin) {
         boolean[] d = initVisitedForSearch(origin);
@@ -320,7 +317,7 @@ public class Graph {
         visited[current] = true;
         // Recur for all the vertices adjacent to this
         // vertex
-        for(int n=0; n<this.getSize();n++){
+        for (int n = 0; n < this.getSize(); n++) {
             if (!visited[n]) return DFSUtil(origin, destin, n, visited, distance + this.matrix[current][n]);
         }
         return -1;
