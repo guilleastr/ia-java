@@ -14,6 +14,7 @@ public class Graph {
 
 
     private final static String ORIGIN = "GREEN DISTRIBUTION";
+    private final static int DEFAULT_LIMIT = 5;
 
 
     // standard constructor, getters, setters
@@ -27,6 +28,9 @@ public class Graph {
     }
 
     public void addEdge(String label1, String label2, int distancia) {
+        if (this.existEdge(label1, label2)) {
+            return;
+        }
         int x = this.getNodePos(label1);
         int y = this.getNodePos(label2);
         this.matrix[x][y] = distancia;
@@ -181,8 +185,7 @@ public class Graph {
         return node;
     }
 
-    private int minCostPath(String origen, String destino) {
-        floyd();
+    public int minCostPath(String origen, String destino) {
         int value = A[this.getNodePos(origen)][this.getNodePos(destino)];
         if (value > 0 && value != Integer.MAX_VALUE) {
             return value;
@@ -256,7 +259,7 @@ public class Graph {
         return a;
     }
 
-    private int getSize() {
+    public int getSize() {
         return this.getNodes().size();
     }
 
@@ -267,6 +270,7 @@ public class Graph {
 
     public int BFS(String origin, String destin) {
         int current = this.getNodePos(origin);
+        int finish=this.getNodePos(destin);
         int distance = -1;
         boolean visited[] = initVisitedForSearch(origin);
 
@@ -278,7 +282,7 @@ public class Graph {
         visited[current] = true;
         queue.add(current);
 
-        while (queue.size() != 0) {
+        while (!queue.isEmpty()) {
             // Dequeue a vertex from queue and print it
             current = queue.poll();
             // Get all adjacent vertices of the dequeued vertex s
@@ -286,24 +290,20 @@ public class Graph {
             // visited and enqueue it
             Iterator<Integer> i = Arrays.stream(this.matrix[current]).iterator();
 
-            for (int n=0; n<this.getSize();n++){
+            for (int n = 0; n < this.getSize(); n++) {
                 //int n = n.next();
-                if (!visited[n]) {
 
-                    if (distances[n] > distances[current] + this.matrix[current][n]) {
+                if (!visited[n] && current != n) {
+                    if (distances[n] >= distances[current] + this.matrix[current][n]&& distances[current] + this.matrix[current][n]>0) {
                         distances[n] = distances[current] + this.matrix[current][n];
                         visited[n] = true;
                         queue.add(n);
-                    }
-
-                    if (this.nodes.get(n).is(destin)) {
-                        return distances[n];
                     }
                 }
 
             }
         }
-        return distance;
+        return distances[finish];
     }
 
     public int DFS(String origin, String destin) {
@@ -320,10 +320,37 @@ public class Graph {
         visited[current] = true;
         // Recur for all the vertices adjacent to this
         // vertex
-        Iterator<Integer> i = Arrays.stream(matrix[current]).iterator();
-        while (i.hasNext()) {
-            int n = i.next();
+        for(int n=0; n<this.getSize();n++){
             if (!visited[n]) return DFSUtil(origin, destin, n, visited, distance + this.matrix[current][n]);
+        }
+        return -1;
+    }
+
+
+    public int DFS(String origin, String destin, int limit) {
+        boolean[] d = initVisitedForSearch(origin);
+        if (limit > 0)
+            return DFSUtil(origin, destin, this.getNodePos(origin), d, 0, limit);
+        return DFSUtil(origin, destin, this.getNodePos(origin), d, 0, DEFAULT_LIMIT);
+
+    }
+
+
+    private int DFSUtil(String origin, String destin, int current, boolean visited[], int distance, int limit) {
+        if (limit > 0) {
+            if (this.nodes.get(current).is(destin)) return distance;
+            // Mark the current node as visited and print it
+            visited[current] = true;
+            // Recur for all the vertices adjacent to this
+            // vertex
+            Iterator<Integer> i = Arrays.stream(matrix[current]).iterator();
+            while (i.hasNext()) {
+                int n = i.next();
+                if (!visited[n]) {
+
+                }
+                return DFSUtil(origin, destin, n, visited, distance + this.matrix[current][n], limit - 1);
+            }
         }
         return 0;
     }
