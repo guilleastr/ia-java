@@ -20,10 +20,11 @@ public class Main {
 
         int[] values= graph.dijkstra("AVDA BRAGA");
 
-        //System.out.println(Arrays.toString(values));
+        System.out.println(Arrays.toString(values));
 
+        System.out.println(graph.BFS("AVDA BRAGA","RUA FONTE"));
 
-        graph.floyd();
+        /*graph.floyd();
         PrettyPrinter p= new PrettyPrinter(System.out,"NaN");
         PrettyPrinterInteger pi= new PrettyPrinterInteger(System.out,-1);
 
@@ -32,7 +33,7 @@ public class Main {
         ruas.add("RUA FONTE");
         ruas.add("RUA PORTUGAL");
         ruas.add("AVDA BRAGA");
-        System.out.println(graph.sendMultipleEstefeta(ruas));
+        System.out.println(graph.sendMultipleEstefeta(ruas));*/
 
 
 

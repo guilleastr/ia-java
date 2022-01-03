@@ -148,19 +148,19 @@ public class Graph {
     }
 
     public List<String> sendEstafeta(String destin) {
-        List<String> path=path(ORIGIN, destin);
-        path.addAll(path(destin,ORIGIN));
+        List<String> path = path(ORIGIN, destin);
+        path.addAll(path(destin, ORIGIN));
         return path;
     }
 
-    public List<String> sendMultipleEstefeta(List<String> destins){
-        List<String>path= new ArrayList<>();
-        String last=ORIGIN;
-        while(destins.size()>0){
-            String next=nextLocation(ORIGIN,destins);
+    public List<String> sendMultipleEstefeta(List<String> destins) {
+        List<String> path = new ArrayList<>();
+        String last = ORIGIN;
+        while (destins.size() > 0) {
+            String next = nextLocation(ORIGIN, destins);
             destins.remove(next);
-            path.addAll(path(last,next));
-            last=next;
+            path.addAll(path(last, next));
+            last = next;
 
         }
 
@@ -168,14 +168,14 @@ public class Graph {
         return path;
     }
 
-    private String nextLocation(String origen,List<String> left){
-        String node="";
-        int value=Integer.MAX_VALUE;
-        for(String str:left){
-            int min=minCostPath(origen,str);
-            if(min<value){
-                value=min;
-                node=str;
+    private String nextLocation(String origen, List<String> left) {
+        String node = "";
+        int value = Integer.MAX_VALUE;
+        for (String str : left) {
+            int min = minCostPath(origen, str);
+            if (min < value) {
+                value = min;
+                node = str;
             }
         }
         return node;
@@ -264,43 +264,79 @@ public class Graph {
         return P;
     }
 
-    public int DFS(String origin, String destin){
-        boolean[] d= new boolean[this.getSize()];
-        for (int i = 0; i < this.getSize(); i++) {
-            if (i == this.getNodePos(origin)) {
-                d[i] = true;
-            } else if (this.existEdge(origin, this.getNodes().get(i).getLabel())) {
-                d[i] = true;
-            } else {
-                d[i] = false;
+
+    public int BFS(String origin, String destin) {
+        int current = this.getNodePos(origin);
+        int distance = -1;
+        boolean visited[] = initVisitedForSearch(origin);
+
+        int[] distances = this.innitD(origin);
+        // Create a queue for BFS
+        LinkedList<Integer> queue = new LinkedList<Integer>();
+
+        // Mark the current node as visited and enqueue it
+        visited[current] = true;
+        queue.add(current);
+
+        while (queue.size() != 0) {
+            // Dequeue a vertex from queue and print it
+            current = queue.poll();
+            // Get all adjacent vertices of the dequeued vertex s
+            // If a adjacent has not been visited, then mark it
+            // visited and enqueue it
+            Iterator<Integer> i = Arrays.stream(this.matrix[current]).iterator();
+
+            for (int n=0; n<this.getSize();n++){
+                //int n = n.next();
+                if (!visited[n]) {
+
+                    if (distances[n] > distances[current] + this.matrix[current][n]) {
+                        distances[n] = distances[current] + this.matrix[current][n];
+                        visited[n] = true;
+                        queue.add(n);
+                    }
+
+                    if (this.nodes.get(n).is(destin)) {
+                        return distances[n];
+                    }
+                }
+
             }
         }
+        return distance;
+    }
 
-        return DFSUtil(origin,destin,this.getNodePos(origin),d,0);
+    public int DFS(String origin, String destin) {
+        boolean[] d = initVisitedForSearch(origin);
+        return DFSUtil(origin, destin, this.getNodePos(origin), d, 0);
 
     }
 
-    // A function used by DFS
-    private int DFSUtil(String origin, String destin,int current, boolean visited[], int distance)
-    {
-        if(this.nodes.get(current).is(destin))
-                return distance;
 
+    // A function used by DFS
+    private int DFSUtil(String origin, String destin, int current, boolean visited[], int distance) {
+        if (this.nodes.get(current).is(destin)) return distance;
         // Mark the current node as visited and print it
         visited[current] = true;
-        System.out.print(current + " ");
-
         // Recur for all the vertices adjacent to this
         // vertex
         Iterator<Integer> i = Arrays.stream(matrix[current]).iterator();
         while (i.hasNext()) {
             int n = i.next();
-            if (!visited[n])
-                return DFSUtil(origin, destin,n, visited, distance+this.matrix[current][n]);
+            if (!visited[n]) return DFSUtil(origin, destin, n, visited, distance + this.matrix[current][n]);
         }
         return 0;
     }
 
+    private boolean[] initVisitedForSearch(String origin) {
+        boolean[] d = new boolean[this.getSize()];
+        for (int i = 0; i < this.getSize(); i++) {
+            if (i == this.getNodePos(origin)) {
+                d[i] = true;
+            }
+        }
+        return d;
+    }
 
 
 }
