@@ -4,10 +4,12 @@ import Timer.Timer;
 import graph.*;
 import printer.PrettyPrinter;
 import printer.PrettyPrinterInteger;
+import transport.Transport;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 
 public class Main {
 
@@ -15,9 +17,20 @@ public class Main {
         Timer timer= new Timer();
 
         timer.run();
-
-        /*Graph graph = createGraph(); //creamos el grafo
-        List<Node> nodes= graph.getNodes();
+        
+        // Generamos los transportes
+        Transport bicicleta = new Transport("bicicleta", 25.0, 50.0); 
+        Transport moto = new Transport("moto", 75.0, 90.0);
+        Transport coche = new Transport("coche", 300.0, 100.0);
+      
+        Graph graph = createGraph(); //creamos el grafo
+        
+        // Tiempos de entrega ---falta la distancia
+        double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), 0);
+        double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), 0);
+        double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), 0);
+        
+        /*List<Node> nodes= graph.getNodes();
         for (int i=0;i<nodes.size();i++){
             System.out.println(nodes.get(i).getLabel());
 

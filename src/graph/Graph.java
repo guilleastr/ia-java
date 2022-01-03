@@ -362,5 +362,32 @@ public class Graph {
         return d;
     }
 
+    // Gulosa/estrela
+    // Calcula tiempo de entrega
+    public double calculaTiempo(double kg, String transporte, double distancia){
+    	double tiempo = 0;
+    	double velocidad = 0;
+    	int numKg = (int)kg;
+		for(int i=0; i<numKg; i++) {
+	    	if(transporte.equals("bicicleta")) {
+	    		velocidad = velocidad - 0.7;
+	    	}
+	    	
+	    	if(transporte.equals("coche")) {
+	    		velocidad = velocidad - 0.5;
+	    		
+	    	}
+	    	
+	    	if(transporte.equals("moto")) {
+	    		velocidad = velocidad - 0.1;
+	    	}
+		}
+		
+		tiempo = distancia * (1/velocidad);
+    	
+    	return tiempo;
+    	
+    }
+    
 
 }
