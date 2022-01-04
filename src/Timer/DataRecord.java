@@ -38,6 +38,16 @@ public class DataRecord {
     }
 
 
+
+
+    public String toExcel(){
+        return algorithm + "; " + bestAnswer +"; "+timeElapsed +
+                "; " + result +
+                ";  " + bestResult +
+                "; " + origin +
+                "; " + destin +"; "; 
+    }
+
     @Override
     public String toString() {
         if (bestAnswer) {
@@ -61,4 +71,6 @@ public class DataRecord {
                 '}';
 
     }
+
+
 }
