@@ -51,6 +51,7 @@ public class Timer {
         this.printData();
 
         this.saveData();
+        this.estrella();
 
 
     }
