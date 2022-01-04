@@ -1,6 +1,7 @@
 package Timer;
 
 import graph.Graph;
+import transport.Transport;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -148,4 +149,14 @@ public class Timer {
     private void addData(long start, long end, String type, String label1, String label2, int distance) {
         this.data.add(new DataRecord(type, end - start, distance,  graph.minCostPath(label1, label2), label1,label2));
     }
+    
+    // Generamos los transportes
+    Transport bicicleta = new Transport("bicicleta", 25.0, 50.0); 
+    Transport moto = new Transport("moto", 75.0, 90.0);
+    Transport coche = new Transport("coche", 300.0, 100.0);
+    
+    // Tiempos de entrega ---falta la distancia
+    double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(null, null));
+    double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
+    double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));
 }
