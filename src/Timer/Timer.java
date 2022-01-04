@@ -9,6 +9,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import Star.NodoEstrela;
+import Star.Star;
+
 public class Timer {
 
     private final static int DEFAULT_GRAPH_SIZE = 9;
@@ -33,7 +36,8 @@ public class Timer {
 
         this.printData();
         this.saveData();
-
+        
+        this.estrella();
 
     }
 
@@ -159,7 +163,44 @@ public class Timer {
         graph.print();
         graph.floyd();
     }
+    
+    private void estrella() {
+    	NodoEstrela head = new NodoEstrela("GREEN DISTRIBUTION", 5);
+        head.g = 0;
 
+        NodoEstrela n2 = new NodoEstrela("AVDA PARIS",4);
+        NodoEstrela n3 = new NodoEstrela("AVDA LIBERDADE",4);
+        NodoEstrela n4 = new NodoEstrela("RUA FONTE",3);
+        NodoEstrela n5 = new NodoEstrela("RUA PORTUGAL", 3);
+        NodoEstrela n6 = new NodoEstrela("AVDA SANTANDER", 2);
+        NodoEstrela n7 = new NodoEstrela("RUA DE MINHO", 1);
+        NodoEstrela target = new NodoEstrela("RUA ESPANHA", 0);
+        NodoEstrela n9 = new NodoEstrela("" + "AVDA BRAGA", 4);
+
+        head.addBranch(12, n2);
+        head.addBranch(20, n3);
+
+        n2.addBranch(30, n5);
+        n2.addBranch(22, n4);
+
+        n4.addBranch(10, n6);
+        n4.addBranch(45, n3);
+
+        n5.addBranch(7, n6);
+
+        n6.addBranch( 9, n7);
+        n7.addBranch(18, target);
+
+        head.addBranch(18, n9);
+        n9.addBranch(7, n6);
+
+        NodoEstrela res = Star.aStar(head, target);
+
+        System.out.println("ESTRELLA");
+
+        Star.printPath(res);
+    }
+    
     private void testDFS() {
         long start, end;
         final String type = "DFS";
@@ -252,16 +293,6 @@ public class Timer {
     private void addData(long start, long end, String type, String label1, String label2, int distance) {
         this.data.add(new DataRecord(type, (end- start)/1000, distance,  graph.minCostPath(label1, label2), label1,label2));
     }
-//
-//    // Generamos los transportes
-//    Transport bicicleta = new Transport("bicicleta", 25.0, 50.0);
-//    Transport moto = new Transport("moto", 75.0, 90.0);
-//    Transport coche = new Transport("coche", 300.0, 100.0);
-//
-//    // Tiempos de entrega ---falta la distancia
-//    double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(label1, label2));
-//    double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
-//    double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));
 
     /*
     // Generamos los transportes
