@@ -273,27 +273,22 @@ public class Graph {
         int current = this.getNodePos(origin);
         int finish = this.getNodePos(destin);
         int distance = -1;
-        boolean visited[] = initVisitedForSearch(origin);
 
         int[] distances = this.innitD(origin);
+
+
+
         // Create a queue for BFS
         LinkedList<Integer> queue = new LinkedList<Integer>();
-
-        // Mark the current node as visited and enqueue it
-        visited[current] = true;
         queue.add(current);
 
         while (!queue.isEmpty()) {
-            // Dequeue a vertex from queue and print it
             current = queue.poll();
-
-            visited[current] = true;
-
             for (int n = 0; n < this.getSize(); n++) {
-                if (!visited[n] && distances[n] > 0) {
+                if ( distances[n] > 0) {
                     if (distances[n] >= distances[current] + this.matrix[current][n] && this.matrix[current][n] >0) {
-                        distances[n] = distances[current] + this.matrix[current][n];
                         queue.add(n);
+                        distances[n] = distances[current] + this.matrix[current][n];
                     }
                 }
 
@@ -340,14 +335,10 @@ public class Graph {
             visited[current] = true;
             // Recur for all the vertices adjacent to this
             // vertex
-            Iterator<Integer> i = Arrays.stream(matrix[current]).iterator();
-            while (i.hasNext()) {
-                int n = i.next();
-                if (!visited[n]) {
-
-                }
-                return DFSUtil(origin, destin, n, visited, distance + this.matrix[current][n], limit - 1);
+            for (int n = 0; n < this.getSize(); n++) {
+                if (!visited[n]) return DFSUtil(origin, destin, n, visited, distance + this.matrix[current][n]);
             }
+            return -1;
         }
         return 0;
     }
