@@ -16,7 +16,8 @@ public class Main {
     public static void main(String[] args) {
         Timer timer= new Timer();
 
-        timer.run();
+        timer.run(50);
+        //timer.run(100);
         
         
         /* Graph graph = createGraph(); //creamos el grafo
