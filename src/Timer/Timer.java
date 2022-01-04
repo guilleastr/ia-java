@@ -25,6 +25,7 @@ public class Timer {
         this.initGraph();
         this.testBFS();
         this.testDFS();
+        this.testGreedyFirst();
         this.printData();
 
     }
@@ -34,6 +35,7 @@ public class Timer {
         initGraph(size);
         this.testBFS();
         this.testDFS();
+        this.testGreedyFirst();
         this.printData();
 
     }
@@ -98,7 +100,7 @@ public class Timer {
         graph.addEdge(r7, r8, 18);
         graph.addEdge(r1, r9, 18);
         graph.addEdge(r9, r6, 7);
-
+        graph.print();
         graph.floyd();
     }
 
@@ -146,17 +148,41 @@ public class Timer {
         }
     }
 
+    private void testGreedyFirst() {
+        long start, end;
+        final String type = "GREEDY-FIRST";
+
+        System.out.println(type);
+
+        for (int i = 0; i < graph.getSize(); i++) {
+            for (int j = 0; j < graph.getSize(); j++) {
+                if(i==j)continue;
+
+                String label1= graph.getNodes().get(i).getLabel();
+                String label2= graph.getNodes().get(j).getLabel();
+
+                start = System.currentTimeMillis();
+                int distance = graph.greedyfirst(label1,label2);
+                end = System.currentTimeMillis();
+                addData(start, end, type, label1, label2, distance);
+
+
+
+            }
+        }
+    }
+
     private void addData(long start, long end, String type, String label1, String label2, int distance) {
         this.data.add(new DataRecord(type, end - start, distance,  graph.minCostPath(label1, label2), label1,label2));
     }
-    
-    // Generamos los transportes
-    Transport bicicleta = new Transport("bicicleta", 25.0, 50.0); 
-    Transport moto = new Transport("moto", 75.0, 90.0);
-    Transport coche = new Transport("coche", 300.0, 100.0);
-    
-    // Tiempos de entrega ---falta la distancia
-    double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(null, null));
-    double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
-    double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));
+//
+//    // Generamos los transportes
+//    Transport bicicleta = new Transport("bicicleta", 25.0, 50.0);
+//    Transport moto = new Transport("moto", 75.0, 90.0);
+//    Transport coche = new Transport("coche", 300.0, 100.0);
+//
+//    // Tiempos de entrega ---falta la distancia
+//    double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(label1, label2));
+//    double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
+//    double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));
 }

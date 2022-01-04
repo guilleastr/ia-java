@@ -45,6 +45,8 @@ public class Graph {
         return this.matrix[x][y];
     }
 
+
+
     public List<Node> getNodes() {
         return new ArrayList<>(this.nodes);
     }
@@ -309,6 +311,66 @@ public class Graph {
 
     }
 
+    public int greedyfirst(String origin, String destination) {
+        int  cost=100000;
+        System.out.println("buscando desde " + origin + " " + destination);
+        int start = getNodePos(origin);
+        int end = getNodePos(destination);
+        int nextRua = -1;
+        boolean visited[] = new boolean[this.getSize()];//almacena las calles que han sido visitada
+        visited[start]=true;
+        int cont = 0;
+        //obtenemos una lista de nodos adyacentes
+        List<Node> adyacentes = new ArrayList<>();
+        for (int j=0;j<getSize();j++){
+            if (matrix[start][j]!=0||matrix[j][start]!=0){
+                adyacentes.add(this.nodes.get(j));
+            }
+        }
+
+        for (Node n:adyacentes){
+            if (n.getLabel().equals(destination)){ //uno de los nodos destino es adyacente
+                return getDistance(origin,destination);
+            }
+        }
+        return greedyfirstutil(origin,destination,0,0,visited);
+    }
+
+    private int greedyfirstutil(String origen, String dest, int total, int veces, boolean[]visited){
+        List<Node> adyacentes = new ArrayList<>();
+        for (int j=0;j<getSize();j++){
+            if (matrix[getNodePos(origen)][j]!=0 && visited[j]==false){
+                adyacentes.add(this.nodes.get(j));
+                System.out.println("los nodos adyacentes de "+ origen + " son " + this.nodes.get(j).getLabel());
+            }
+        }
+        //sino hay que seguir buscando segun el camino mas corto
+        Node siguiente = null;
+        int mincost=10000;
+        for (Node n:adyacentes){
+            int d = getDistance(origen,n.getLabel());
+            if (n.getLabel().equals(dest)){
+                return total+d;
+
+            } else if (d<mincost&&d!=0) {
+                siguiente = n;
+                mincost = d;
+            }
+        }
+        if (veces>=20){
+            return -1;
+        }
+        veces++;
+        if (siguiente!=null){
+            visited[getNodePos(siguiente.getLabel())]=true;
+            return greedyfirstutil(siguiente.getLabel(),dest,total+mincost,veces,visited);
+        }
+        return -1;
+
+    }
+
+
+
 
     // A function used by DFS
     private int DFSUtil(String origin, String destin, int current, boolean visited[], int distance) {
@@ -388,6 +450,15 @@ public class Graph {
     	return tiempo;
     	
     }
-    
 
+
+    public void print() {
+        for (int i = 0; i<this.matrix.length;i++){
+            for(int j=0;j<this.matrix.length;j++){
+                System.out.print(this.matrix[i][j]+ "\t");
+            }
+            System.out.println();
+        }
+
+    }
 }
