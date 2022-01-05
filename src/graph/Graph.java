@@ -130,7 +130,7 @@ public class Graph {
         return path;
     }
 
-    private int sendMultipleEstefetaDistance(List<Entrega> destins) {
+    public int sendMultipleEstefetaDistance(List<Entrega> destins) {
         int distance = 0;
         String last = ORIGIN;
         while (destins.size() > 0) {
