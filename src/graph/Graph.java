@@ -1,11 +1,15 @@
 package graph;
 
+import Star.NodoEstrela;
+
 import java.util.*;
 
 public class Graph {
 
 
     private List<Node> nodes;
+
+    private List<NodoEstrela> nodesEstrella;
 
     private int[][] matrix;
 
@@ -21,11 +25,16 @@ public class Graph {
     public Graph(int size) {
         this.matrix = new int[size][size];
         this.nodes = new ArrayList<>();
-
+        this.nodesEstrella = new ArrayList<>();
     }
 
     public void addNode(String label) {
         this.nodes.add(new Node(label));
+    }
+
+    public void addNodeDirecto(NodoEstrela node) {
+        this.nodesEstrella.add(node);
+        //System.out.println("añadido");
     }
 
     public void addEdge(String label1, String label2, int distancia) {
@@ -49,6 +58,10 @@ public class Graph {
 
     public List<Node> getNodes() {
         return new ArrayList<>(this.nodes);
+    }
+
+    public List<NodoEstrela> getNodesEstrella() {
+        return new ArrayList<>(this.nodesEstrella);
     }
 
     private int getNodePos(String label) {
@@ -153,6 +166,7 @@ public class Graph {
         return 0;
 
     }
+
 
     public List<String> sendEstafeta(String destin) {
         List<String> path = path(ORIGIN, destin);

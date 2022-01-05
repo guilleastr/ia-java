@@ -31,6 +31,7 @@ public class Timer {
 
     public void run() {
         this.initGraph();
+        this.initGraphEstrella();
         this.testBFS();
         this.testDFS();
         this.testGreedyFirst();
@@ -75,7 +76,7 @@ public class Timer {
 
     }
 
-    private void printData() {
+      private void printData() {
         List<DataRecord> bfs= new ArrayList<DataRecord>();
         List<DataRecord> dfs= new ArrayList<DataRecord>();
         List<DataRecord> dfsi= new ArrayList<DataRecord>();
@@ -172,11 +173,12 @@ public class Timer {
         graph.print();
         graph.floyd();
     }
-    
-    private void estrella() {
- 
-        long start, end;
-    	NodoEstrela head = new NodoEstrela("GREEN DISTRIBUTION", 5);
+
+    private void initGraphEstrella() {
+
+        System.out.println();
+
+        NodoEstrela head = new NodoEstrela("GREEN DISTRIBUTION", 5);
         head.g = 0;
 
         NodoEstrela n2 = new NodoEstrela("AVDA PARIS",4);
@@ -205,17 +207,47 @@ public class Timer {
         head.addBranch(18, n9);
         n9.addBranch(7, n6);
 
-        start = System.currentTimeMillis();
-        NodoEstrela res = Star.aStar(head, target);
-        end = System.currentTimeMillis();
+        graph.addNodeDirecto(head);
+        graph.addNodeDirecto(n2);
+        graph.addNodeDirecto(n3);
+        graph.addNodeDirecto(n4);
+        graph.addNodeDirecto(n5);
+        graph.addNodeDirecto(n6);
+        graph.addNodeDirecto(n7);
+        graph.addNodeDirecto(target);
+        graph.addNodeDirecto(n9);
 
-        System.out.println("ESTRELLA");
+    }
+    
+    private void estrella() {
 
-        long time = end - start;
-
-        Star.printPath(res, time, head.getLabel(), target.getLabel());
-   
+        long start, end;
+        final String type= "A*";
+        System.out.println(type);
         
+        System.out.println(graph.getSize());
+        for (int i = 0; i < graph.getSize(); i++) {
+            for (int j = 0; j < graph.getSize(); j++) {
+                if (i == j) continue;
+                NodoEstrela node1 = graph.getNodesEstrella().get(i);
+                NodoEstrela node2 = graph.getNodesEstrella().get(j);
+
+                start = System.currentTimeMillis();
+                NodoEstrela res = Star.aStar(node1, node2);
+                end = System.currentTimeMillis();
+
+
+                long time = end - start;
+
+                Star.printPath(res, time, node1.getLabel(), node2.getLabel());
+                
+                /*
+                String label1 = node1.getLabel();
+                String label2 = node2.getLabel();
+                
+                addData(start, end, type, label1, label2, 0);*/
+            }
+        }
     }
     
     private void testDFS() {
@@ -322,12 +354,12 @@ public class Timer {
     double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
     double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));*/
     
- // Generamos los transportes
+ // Generamos los pedidos
     Pedido pedido1 = new Pedido("p01", 5.50, bicicleta, 40.0);
     Pedido pedido2 = new Pedido("p02", 20.0, moto, 20.0);
     Pedido pedido3 = new Pedido("p03", 50.0, coche, 40.0);
     
- // Generamos los transportes
+ // Generamos las entregas
     Entrega entrega1 = new Entrega("e01", "AVDA BRAGA", pedido1);
     Entrega entrega2 = new Entrega("e02", "RUA DE MINHO", pedido2);
     Entrega entrega3 = new Entrega("e03", "RUA FONTE", pedido2);
