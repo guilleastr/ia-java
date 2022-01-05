@@ -13,7 +13,7 @@ public class Timer {
 
     private final static int DEFAULT_GRAPH_SIZE = 9;
 
-    private final static int DEFAULT_DFS_LIMIT=5;
+    private final static int DEFAULT_DFS_LIMIT = 3;
 
     private Graph graph;
 
@@ -48,71 +48,69 @@ public class Timer {
 
     }
 
-    private void initGraph(int size) {
-        this.graph = new Graph(size);
-        for (int i = 0; i < size; i++) {
-            graph.addNode(String.valueOf(i));
-        }
 
-
-        for (int i = 0; i < size; i++) {
-            graph.addEdge(String.valueOf(i), String.valueOf(new Random().nextInt(size)), new Random().nextInt(50));
-            graph.addEdge(String.valueOf(i), String.valueOf(new Random().nextInt(size)), new Random().nextInt(50));
-            graph.addEdge(String.valueOf(i), String.valueOf(new Random().nextInt(size)), new Random().nextInt(50));
-        }
-
-        graph.floyd();
-
-        System.out.println("Graph inizialized");
-
-
-    }
 
     private void printData() {
-        List<DataRecord> bfs= new ArrayList<DataRecord>();
-        List<DataRecord> dfs= new ArrayList<DataRecord>();
-        List<DataRecord> dfsi= new ArrayList<DataRecord>();
+        List<DataRecord> bfs = new ArrayList<DataRecord>();
+        List<DataRecord> dfs = new ArrayList<DataRecord>();
+        List<DataRecord> dfsi = new ArrayList<DataRecord>();
         for (DataRecord dataR : data) {
-            switch (dataR.getAlgorithm()){
-                case "BFS":
-                    bfs.add(dataR);
-                case "DFS":
-                    dfs.add(dataR);
-                case "DFS-Iterative":
-                    dfsi.add(dataR);
 
-            }
+            if (dataR.getAlgorithm().equals("BFS"))
+                bfs.add(dataR);
+            if (dataR.getAlgorithm().equals("DFS"))
+                dfs.add(dataR);
+            if (dataR.getAlgorithm().equals("DFS-Iterative"))
+                dfsi.add(dataR);
+
+
             System.out.println(dataR.toString());
         }
 
-        int correct=0;
+        int correct = 0;
         for (DataRecord dataR : dfs) {
-            if(dataR.isBestAnswer()){
+            if (dataR.isBestAnswer()) {
                 correct++;
             }
         }
-        int correcti=0;
+        int correcti = 0;
         for (DataRecord dataR : dfsi) {
-            if(dataR.isBestAnswer()){
+            if (dataR.isBestAnswer()) {
                 correcti++;
             }
         }
-        System.out.println("DFS: RATE OF SUCCESS: "+ ((double) correct/dfs.size())*100+"%");
-        System.out.println("DFS iterative: RATE OF SUCCESS: "+ ((double) correcti/dfsi.size())*100+"%");
-
-
+        System.out.println("DFS: RATE OF SUCCESS: " + ((double) correct / dfs.size()) * 100 + "%");
+        System.out.println("DFS iterative: RATE OF SUCCESS: " + ((double) correcti / dfsi.size()) * 100 + "%");
     }
 
-    private void saveData(){
+    private void saveData() {
+        List<DataRecord> bfs = new ArrayList<DataRecord>();
+        List<DataRecord> dfs = new ArrayList<DataRecord>();
+        List<DataRecord> dfsi = new ArrayList<DataRecord>();
+        for (DataRecord dataR : data) {
+            if (dataR.getAlgorithm().equals("BFS"))
+                bfs.add(dataR);
+            if (dataR.getAlgorithm().equals("DFS"))
+                dfs.add(dataR);
+            if (dataR.getAlgorithm().equals("DFS-Iterative"))
+                dfsi.add(dataR);
+        }
+        saveDataToFile(bfs,"data-bfs.csv");
+        saveDataToFile(dfs,"data-dfs.csv");
+        saveDataToFile(dfsi,"data-dfsi.csv");
+    }
+
+    private void saveDataToFile(List<DataRecord> fs, String filename) {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter("data.csv", "UTF-8");
+            writer = new PrintWriter(filename, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        for (DataRecord dataR : data) {
+
+        for (DataRecord dataR : fs) {
             writer.println(dataR.toExcel());
         }
         writer.close();
@@ -165,12 +163,12 @@ public class Timer {
 
         for (int i = 0; i < graph.getSize(); i++) {
             for (int j = 0; j < graph.getSize(); j++) {
-                if(i==j)continue;
-                String label1= graph.getNodes().get(i).getLabel();
-                String label2= graph.getNodes().get(j).getLabel();
+                if (i == j) continue;
+                String label1 = graph.getNodes().get(i).getLabel();
+                String label2 = graph.getNodes().get(j).getLabel();
 
                 start = System.nanoTime();
-                int distance = graph.DFS(label1,label2);
+                int distance = graph.DFS(label1, label2);
                 end = System.nanoTime();
 
                 addData(start, end, type, label1, label2, distance);
@@ -186,19 +184,18 @@ public class Timer {
 
         for (int i = 0; i < graph.getSize(); i++) {
             for (int j = 0; j < graph.getSize(); j++) {
-                if(i==j)continue;
-                String label1= graph.getNodes().get(i).getLabel();
-                String label2= graph.getNodes().get(j).getLabel();
+                if (i == j) continue;
+                String label1 = graph.getNodes().get(i).getLabel();
+                String label2 = graph.getNodes().get(j).getLabel();
 
                 start = System.nanoTime();
-                int distance = graph.DFS(label1,label2, DEFAULT_DFS_LIMIT);
+                int distance = graph.DFS(label1, label2, DEFAULT_DFS_LIMIT);
                 end = System.nanoTime();
 
                 addData(start, end, type, label1, label2, distance);
             }
         }
     }
-
 
     private void testBFS() {
 
@@ -209,13 +206,13 @@ public class Timer {
 
         for (int i = 0; i < graph.getSize(); i++) {
             for (int j = 0; j < graph.getSize(); j++) {
-                if(i==j)continue;
+                if (i == j) continue;
 
-                String label1= graph.getNodes().get(i).getLabel();
-                String label2= graph.getNodes().get(j).getLabel();
+                String label1 = graph.getNodes().get(i).getLabel();
+                String label2 = graph.getNodes().get(j).getLabel();
 
                 start = System.nanoTime();
-                int distance = graph.BFS(label1,label2);
+                int distance = graph.BFS(label1, label2);
                 end = System.nanoTime();
                 addData(start, end, type, label1, label2, distance);
             }
@@ -223,7 +220,27 @@ public class Timer {
     }
 
     private void addData(long start, long end, String type, String label1, String label2, int distance) {
-        this.data.add(new DataRecord(type, (end- start)/1000, distance,  graph.minCostPath(label1, label2), label1,label2));
+        this.data.add(new DataRecord(type, (end - start) / 1000, distance, graph.minCostPath(label1, label2), label1, label2));
+    }
+
+    private void initGraph(int size) {
+        this.graph = new Graph(size);
+        for (int i = 0; i < size; i++) {
+            graph.addNode(String.valueOf(i));
+        }
+
+
+        for (int i = 0; i < size; i++) {
+            graph.addEdge(String.valueOf(i), String.valueOf(new Random().nextInt(size)), new Random().nextInt(50));
+            graph.addEdge(String.valueOf(i), String.valueOf(new Random().nextInt(size)), new Random().nextInt(50));
+            graph.addEdge(String.valueOf(i), String.valueOf(new Random().nextInt(size)), new Random().nextInt(50));
+        }
+
+        graph.floyd();
+
+        System.out.println("Graph inizialized");
+
+
     }
     /*
     // Generamos los transportes

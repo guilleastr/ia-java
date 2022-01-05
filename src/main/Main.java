@@ -16,34 +16,10 @@ public class Main {
     public static void main(String[] args) {
         Timer timer= new Timer();
 
-        timer.run(50);
+        timer.run(100);
         //timer.run(100);
         
         
-        /* Graph graph = createGraph(); //creamos el grafo
-        List<Node> nodes= graph.getNodes();
-        for (int i=0;i<nodes.size();i++){
-            System.out.println(nodes.get(i).getLabel());
-
-        }
-
-        int[] values= graph.dijkstra("AVDA BRAGA");
-
-        System.out.println(Arrays.toString(values));
-
-        System.out.println(graph.BFS("AVDA BRAGA","RUA FONTE"));
-
-        *//*graph.floyd();
-        PrettyPrinter p= new PrettyPrinter(System.out,"NaN");
-        PrettyPrinterInteger pi= new PrettyPrinterInteger(System.out,-1);
-
-        System.out.println(graph.sendEstafeta("RUA FONTE"));
-        List<String> ruas=new ArrayList<>();
-        ruas.add("RUA FONTE");
-        ruas.add("RUA PORTUGAL");
-        ruas.add("AVDA BRAGA");
-        System.out.println(graph.sendMultipleEstefeta(ruas));*/
-
 
 
     }

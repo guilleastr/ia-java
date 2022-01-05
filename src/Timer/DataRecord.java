@@ -41,7 +41,7 @@ public class DataRecord {
 
 
     public String toExcel(){
-        return algorithm + "; " + bestAnswer +"; "+timeElapsed +
+        return bestAnswer +"; "+timeElapsed +
                 "; " + result +
                 ";  " + bestResult +
                 "; " + origin +
@@ -54,7 +54,7 @@ public class DataRecord {
             return "DataRecord{" +
                     "algorithm='" + algorithm + '\'' +
                     ", bestAnswer=" + bestAnswer +
-                    ", timeElapsed=" + timeElapsed +
+                    ", timeElapsed(ns)=" + timeElapsed +
                     ", result=" + result +
                     ", origin='" + origin + '\'' +
                     ", destin='" + destin + '\'' +
@@ -63,7 +63,7 @@ public class DataRecord {
         return "DataRecord{" +
                 "algorithm='" + algorithm + '\'' +
                 ", bestAnswer=" + bestAnswer +
-                ", timeElapsed=" + timeElapsed +
+                ", timeElapsed(ns)=" + timeElapsed +
                 ", result=" + result +
                 ", bestResult= " + bestResult +
                 ", origin='" + origin + '\'' +
