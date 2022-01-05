@@ -1,16 +1,10 @@
 package main;
 
-import Timer.Timer;
 import delivery.Entrega;
 import delivery.Pedido;
-import graph.*;
-import printer.PrettyPrinter;
-import printer.PrettyPrinterInteger;
-import transport.Transport;
+import graph.Graph;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -20,9 +14,9 @@ public class Main {
 
 /*
     // Tiempos de entrega ---falta la distancia
-    double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(null, null));
-    double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
-    double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));*/
+    double tiempoBicicleta = graphDistances.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graphDistances.getDistance(null, null));
+    double tiempoMoto = graphDistances.calculaTiempo(moto.getKg(), moto.getNameTransport(), graphDistances.getDistance(null, null));
+    double tiempoCoche = graphDistances.calculaTiempo(coche.getKg(), coche.getNameTransport(), graphDistances.getDistance(null, null));*/
 
     // Generamos los pedidos
     static Pedido pedido1 = new Pedido("p01", 3.50, 1, 40.0);
@@ -37,24 +31,27 @@ public class Main {
     static Entrega entrega4 = new Entrega("e04", "AVDA LIBERDADE", pedido4);
 
     public static void main(String[] args) {
-        Graph graph = createGraph();
-        System.out.println(graph.calculateVehicle(entrega1));
-        System.out.println(graph.calculateVehicle(entrega2));
-        System.out.println(graph.calculateVehicle(entrega3));
-        System.out.println(graph.calculateVehicle(entrega4));
+        Graph graphDistances = createGraphDistances();
+        Graph graphTime =createGraphTimes();
+
+        
+        System.out.println(graphDistances.calculateVehicle(entrega1));
+        System.out.println(graphDistances.calculateVehicle(entrega2));
+        System.out.println(graphDistances.calculateVehicle(entrega3));
+        System.out.println(graphDistances.calculateVehicle(entrega4));
 
         List<Entrega> entregas= new ArrayList<>();
         entregas.add(entrega1);
         entregas.add(entrega2);
 
-        System.out.println(graph.sendMultipleEstefeta(new ArrayList<>(entregas)));
+        System.out.println(graphDistances.sendMultipleEstefeta(new ArrayList<>(entregas)));
 
-        System.out.println(graph.calculateVehicle(entregas));
+        System.out.println(graphDistances.calculateVehicle(entregas));
 
 
     }
 
-    public static Graph createGraph() {
+    public static Graph createGraphDistances() {
         Graph graph = new Graph(9);
         String r1 = "AVDA BRAGA";
         String r2 = "AVDA PARIS";
@@ -85,6 +82,42 @@ public class Main {
         graph.addEdge(r7, r8, 18);
         graph.addEdge(r1, r9, 18);
         graph.addEdge(r9, r6, 7);
+
+        return graph;
+    }
+
+
+    public static Graph createGraphTimes() {
+        Graph graph = new Graph(9);
+        String r1 = "AVDA BRAGA";
+        String r2 = "AVDA PARIS";
+        String r3 = "AVDA LIBERDADE";
+        String r4 = "RUA FONTE";
+        String r5 = "RUA PORTUGAL";
+        String r6 = "AVDA SANTANDER";
+        String r7 = "RUA DE MINHO";
+        String r8 = "RUA ESPANHA";
+        String r9 = "GREEN DISTRIBUTION";
+        graph.addNode(r1);
+        graph.addNode(r2);
+        graph.addNode(r3);
+        graph.addNode(r4);
+        graph.addNode(r5);
+        graph.addNode(r6);
+        graph.addNode(r7);
+        graph.addNode(r8);
+        graph.addNode(r9);
+        graph.addEdge(r1, r2, 10);
+        graph.addEdge(r1, r3, 12);
+        graph.addEdge(r2, r5, 24);
+        graph.addEdge(r2, r4, 15);
+        graph.addEdge(r4, r6, 14);
+        graph.addEdge(r4, r3, 22);
+        graph.addEdge(r5, r6, 6);
+        graph.addEdge(r6, r7, 18);
+        graph.addEdge(r7, r8, 15);
+        graph.addEdge(r1, r9, 12);
+        graph.addEdge(r9, r6, 10);
 
         return graph;
     }

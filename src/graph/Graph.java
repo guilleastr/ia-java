@@ -2,6 +2,8 @@ package graph;
 
 import Star.NodoEstrela;
 import delivery.Entrega;
+import printer.PrettyPrinter;
+import printer.PrettyPrinterInteger;
 import transport.Transport;
 
 import java.util.*;
@@ -128,16 +130,7 @@ public class Graph {
         return path;
     }
 
-    private void deleteFromArray(List<Entrega> destins, String next) {
-        Entrega todelete = null;
-        for (Entrega entrega : destins) {
-            if (entrega.getDireccion().equals(next)) ;
-            todelete = entrega;
-        }
-        destins.remove(todelete);
-    }
-
-    public int sendMultipleEstefetaDistance(List<Entrega> destins) {
+    private int sendMultipleEstefetaDistance(List<Entrega> destins) {
         int distance = 0;
         String last = ORIGIN;
         while (destins.size() > 0) {
@@ -147,6 +140,14 @@ public class Graph {
             last = next;
         }
         return distance;
+    }
+    private void deleteFromArray(List<Entrega> destins, String next) {
+        Entrega todelete = null;
+        for (Entrega entrega : destins) {
+            if (entrega.getDireccion().equals(next)) ;
+            todelete = entrega;
+        }
+        destins.remove(todelete);
     }
 
     private String nextLocation(String origen, List<Entrega> left) {
@@ -405,7 +406,7 @@ public class Graph {
 
     // Gulosa/estrela
     // Calcula tiempo de entrega
-    public double calculaTiempo(double kg, String transporte, double distancia) {
+    private double calculaTiempo(double kg, String transporte, double distancia) {
         double tiempo = 0;
         double velocidad = 1;
         int numKg = (int) kg;
@@ -472,12 +473,7 @@ public class Graph {
 
 
     public void print() {
-        for (int i = 0; i < this.matrix.length; i++) {
-            for (int j = 0; j < this.matrix.length; j++) {
-                System.out.print(this.matrix[i][j] + "\t");
-            }
-            System.out.println();
-        }
-
+        PrettyPrinterInteger pp= new PrettyPrinterInteger(System.out, -1);
+        pp.print(this.matrix);
     }
 }
