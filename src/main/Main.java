@@ -8,6 +8,7 @@ import printer.PrettyPrinter;
 import printer.PrettyPrinterInteger;
 import transport.Transport;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,21 +26,22 @@ public class Main {
 
     // Generamos los pedidos
     static Pedido pedido1 = new Pedido("p01", 3.50, 1, 40.0);
-    static Pedido pedido2 = new Pedido("p02", 20.0, 3, 20.0);
-    static Pedido pedido3 = new Pedido("p03", 50.0, 5, 40.0);
+    static Pedido pedido2 = new Pedido("p02", 30.0, 3, 20.0);
+    static Pedido pedido3 = new Pedido("p03", 1.0, 2, 40.0);
+    static Pedido pedido4 = new Pedido("p04", 30.0, 1, 40.0);
 
     // Generamos las entregas
     static Entrega entrega1 = new Entrega("e01", "AVDA BRAGA", pedido1);
     static Entrega entrega2 = new Entrega("e02", "RUA DE MINHO", pedido2);
-    static  Entrega entrega3 = new Entrega("e03", "RUA FONTE", pedido2);
-    static Entrega entrega4 = new Entrega("e04", "AVDA LIBERDADE", pedido3);
+    static Entrega entrega3 = new Entrega("e03", "RUA FONTE", pedido3);
+    static Entrega entrega4 = new Entrega("e04", "AVDA LIBERDADE", pedido4);
 
     public static void main(String[] args) {
-        Graph graph= createGraph();
-
-        String transporte= graph.calculateVehicle(entrega1);
-
-        System.out.println(transporte);
+        Graph graph = createGraph();
+        System.out.println(graph.calculateVehicle(entrega1));
+        System.out.println(graph.calculateVehicle(entrega2));
+        System.out.println(graph.calculateVehicle(entrega3));
+        System.out.println(graph.calculateVehicle(entrega4));
 
 
     }
@@ -64,17 +66,17 @@ public class Main {
         graph.addNode(r7);
         graph.addNode(r8);
         graph.addNode(r9);
-        graph.addEdge(r1, r2,12);
-        graph.addEdge(r1, r3,20);
-        graph.addEdge(r2, r5,30);
-        graph.addEdge(r2, r4,22);
-        graph.addEdge(r4,r6,10);
-        graph.addEdge(r4, r3,45);
-        graph.addEdge(r5, r6,7);
-        graph.addEdge(r6, r7,9);
-        graph.addEdge(r7, r8,18);
-        graph.addEdge(r1, r9,18);
-        graph.addEdge(r9,r6,7);
+        graph.addEdge(r1, r2, 12);
+        graph.addEdge(r1, r3, 20);
+        graph.addEdge(r2, r5, 30);
+        graph.addEdge(r2, r4, 22);
+        graph.addEdge(r4, r6, 10);
+        graph.addEdge(r4, r3, 45);
+        graph.addEdge(r5, r6, 7);
+        graph.addEdge(r6, r7, 9);
+        graph.addEdge(r7, r8, 18);
+        graph.addEdge(r1, r9, 18);
+        graph.addEdge(r9, r6, 7);
 
         return graph;
     }

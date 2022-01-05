@@ -9,10 +9,9 @@ import java.util.*;
 public class Graph {
 
     // Generamos los transportes
-    static Transport bicicleta = new Transport("bicicleta", 0.7, 15.0);
-    static Transport moto = new Transport("moto", 0.5, 30.0);
-    static Transport coche = new Transport("coche", 0.1, 50.0);
-
+    private static Transport bicicleta = new Transport("bicicleta", 0.7, 15.0);
+    private static Transport moto = new Transport("moto", 0.5, 30.0);
+    private static Transport coche = new Transport("coche", 0.1, 50.0);
 
     private List<Node> nodes;
 
@@ -87,74 +86,6 @@ public class Graph {
         return this.matrix[x][y] > 0;
     }
 
-    public int[] dijkstra(String label) {
-
-        int[] d = innitD(label);
-        String[] P = innitP(label);
-
-        boolean[] s = new boolean[this.getSize()];
-        int w = getPivot(d, s);
-
-        while (w != -1) {
-            s[w] = true;
-            for (int i = 0; i < this.getSize(); i++) {
-                if (!s[i] && matrix[w][i] > 0) {
-                    if (d[w] + matrix[w][i] < d[i]) {
-                        d[i] = d[w] + matrix[w][i];
-                        P[i] = this.getNodes().get(w).getLabel();
-                    }
-                }
-            }
-            w = getPivot(d, s);
-        }
-
-        return d;
-
-    }
-
-    private int[] innitD(String label) {
-        int size = this.getNodes().size();
-        int[] d = new int[size];
-        for (int i = 0; i < size; i++) {
-            if (i == this.getNodePos(label)) {
-                d[i] = 0;
-            } else if (this.existEdge(label, this.getNodes().get(i).getLabel())) {
-                d[i] = this.getDistance(label, this.getNodes().get(i).getLabel());
-            } else {
-                d[i] = Integer.MAX_VALUE;
-            }
-        }
-
-        return d;
-    }
-
-    private String[] innitP(String label) {
-        int size = this.getNodes().size();
-        String[] P = new String[size];
-
-        for (int i = 0; i < size; i++) {
-            if (this.existEdge(label, this.getNodes().get(i).getLabel()) || this.getNodePos(label) == i) {
-                P[i] = label;
-            }
-        }
-
-        return P;
-    }
-
-    private int getPivot(int[] d, boolean[] s) {
-
-        int minPos = -1;
-        int minValue = Integer.MAX_VALUE;
-        for (int i = 0; i < this.getSize(); i++) {
-            if (d[i] < minValue && !s[i]) {
-                minPos = i;
-                minValue = d[i];
-            }
-        }
-
-        return minPos;
-
-    }
 
     public int floyd() {
         if (this.getSize() == 0) return -1;
@@ -180,7 +111,7 @@ public class Graph {
         return path;
     }
 
-    public List<String> sendMultipleEstefeta(List<String> destins) {
+    public List<String> sendMultipleEstefeta(List<Entrega> destins) {
         List<String> path = new ArrayList<>();
         String last = ORIGIN;
         while (destins.size() > 0) {
@@ -188,21 +119,29 @@ public class Graph {
             destins.remove(next);
             path.addAll(path(last, next));
             last = next;
-
         }
-
-
         return path;
     }
+    public int sendMultipleEstefetaDistance(List<Entrega> destins) {
+        int distance=0;
+        String last = ORIGIN;
+        while (destins.size() > 0) {
+            String next = nextLocation(ORIGIN, destins);
+            destins.remove(next);
+            distance+=minCostPath(last, next);
+            last = next;
+        }
+        return distance;
+    }
 
-    private String nextLocation(String origen, List<String> left) {
+    private String nextLocation(String origen, List<Entrega> left) {
         String node = "";
         int value = Integer.MAX_VALUE;
-        for (String str : left) {
-            int min = minCostPath(origen, str);
+        for (Entrega str : left) {
+            int min = minCostPath(origen, str.getDireccion());
             if (min < value) {
                 value = min;
-                node = str;
+                node = str.getDireccion();
             }
         }
         return node;
@@ -288,6 +227,22 @@ public class Graph {
 
     public String[][] getP() {
         return P;
+    }
+
+    private int[] innitD(String label) {
+        int size = this.getNodes().size();
+        int[] d = new int[size];
+        for (int i = 0; i < size; i++) {
+            if (i == this.getNodePos(label)) {
+                d[i] = 0;
+            } else if (this.existEdge(label, this.getNodes().get(i).getLabel())) {
+                d[i] = this.getDistance(label, this.getNodes().get(i).getLabel());
+            } else {
+                d[i] = Integer.MAX_VALUE;
+            }
+        }
+
+        return d;
     }
 
 
