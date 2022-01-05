@@ -115,6 +115,10 @@ public class Graph {
         return path;
     }
 
+    public int sendEstafetaDistance(String destin) {
+        return minCostPath(ORIGIN,destin)+minCostPath(destin,ORIGIN);
+    }
+
     public List<String> sendMultipleEstefeta(List<Entrega> destins) {
         List<String> path = new ArrayList<>();
         String last = ORIGIN;
