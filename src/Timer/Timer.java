@@ -11,6 +11,8 @@ import java.util.Random;
 
 import Star.NodoEstrela;
 import Star.Star;
+import delivery.Entrega;
+import delivery.Pedido;
 
 public class Timer {
 
@@ -303,15 +305,25 @@ public class Timer {
         this.data.add(new DataRecord(type, (end- start)/1000, distance,  graph.minCostPath(label1, label2), label1,label2));
     }
 
-    /*
+   
     // Generamos los transportes
     Transport bicicleta = new Transport("bicicleta", 25.0, 50.0); 
     Transport moto = new Transport("moto", 75.0, 90.0);
     Transport coche = new Transport("coche", 300.0, 100.0);
-    
+    /*
     // Tiempos de entrega ---falta la distancia
     double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(null, null));
     double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
     double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));*/
-
+    
+ // Generamos los transportes
+    Pedido pedido1 = new Pedido("p01", 5.50, bicicleta, 40.0);
+    Pedido pedido2 = new Pedido("p02", 20.0, moto, 20.0);
+    Pedido pedido3 = new Pedido("p03", 50.0, coche, 40.0);
+    
+ // Generamos los transportes
+    Entrega entrega1 = new Entrega("e01", "AVDA BRAGA", pedido1);
+    Entrega entrega2 = new Entrega("e02", "RUA DE MINHO", pedido2);
+    Entrega entrega3 = new Entrega("e03", "RUA FONTE", pedido2);
+    Entrega entrega4 = new Entrega("e04", "AVDA LIBERDADE", pedido3);
 }
