@@ -10,13 +10,18 @@ public class Pedido {
 	private Transport transporte;
 	private double precio;
 	private Date date;
+	private double timepoEntrega;
 	
-	public Pedido(String idPedido, double kg, Transport transporte, double precio) {
+	public Pedido(String idPedido, double kg,double timepoEntrega, double precio) {
 		super();
 		this.idPedido = idPedido;
 		this.kg = kg;
-		this.transporte = transporte;
+		this.timepoEntrega = timepoEntrega;
 		this.precio = precio;
+	}
+
+	public double getTimepoEntrega() {
+		return timepoEntrega;
 	}
 
 	public String getIdPedido() {
@@ -37,7 +42,9 @@ public class Pedido {
 
 	public Date getDate() {
 		return date;
-	}	
-	
-	
+	}
+
+	public void setTransporte(Transport transporte) {
+		this.transporte = transporte;
+	}
 }

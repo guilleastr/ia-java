@@ -1,6 +1,8 @@
 package main;
 
 import Timer.Timer;
+import delivery.Entrega;
+import delivery.Pedido;
 import graph.*;
 import printer.PrettyPrinter;
 import printer.PrettyPrinterInteger;
@@ -13,13 +15,31 @@ import java.util.List;
 
 public class Main {
 
+
+
+/*
+    // Tiempos de entrega ---falta la distancia
+    double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(null, null));
+    double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
+    double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));*/
+
+    // Generamos los pedidos
+    static Pedido pedido1 = new Pedido("p01", 3.50, 1, 40.0);
+    static Pedido pedido2 = new Pedido("p02", 20.0, 3, 20.0);
+    static Pedido pedido3 = new Pedido("p03", 50.0, 5, 40.0);
+
+    // Generamos las entregas
+    static Entrega entrega1 = new Entrega("e01", "AVDA BRAGA", pedido1);
+    static Entrega entrega2 = new Entrega("e02", "RUA DE MINHO", pedido2);
+    static  Entrega entrega3 = new Entrega("e03", "RUA FONTE", pedido2);
+    static Entrega entrega4 = new Entrega("e04", "AVDA LIBERDADE", pedido3);
+
     public static void main(String[] args) {
-        Timer timer= new Timer();
+        Graph graph= createGraph();
 
-        timer.run();
-        //timer.run(100);
-        
+        String transporte= graph.calculateVehicle(entrega1);
 
+        System.out.println(transporte);
 
 
     }
