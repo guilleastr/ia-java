@@ -136,6 +136,30 @@ public class Timer {
         writer.close();
     }
 
+    private void testGreedyFirst() {
+        long start, end;
+        final String type = "GREEDY-FIRST";
+
+        System.out.println(type);
+
+        for (int i = 0; i < graph.getSize(); i++) {
+            for (int j = 0; j < graph.getSize(); j++) {
+                if(i==j)continue;
+
+                String label1= graph.getNodes().get(i).getLabel();
+                String label2= graph.getNodes().get(j).getLabel();
+
+                start = System.nanoTime();
+                int distance = graph.greedyfirst(label1,label2);
+                end = System.nanoTime();
+                addData(start, end, type, label1, label2, distance);
+
+
+
+            }
+        }
+    }
+
 
     private void initGraph() {
         this.graph = new Graph(DEFAULT_GRAPH_SIZE);
@@ -339,12 +363,12 @@ public class Timer {
 
 
     }
-    /*
+
     // Generamos los transportes
     Transport bicicleta = new Transport("bicicleta", 25.0, 50.0); 
     Transport moto = new Transport("moto", 75.0, 90.0);
     Transport coche = new Transport("coche", 300.0, 100.0);
-    /*
+/*
     // Tiempos de entrega ---falta la distancia
     double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(null, null));
     double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
