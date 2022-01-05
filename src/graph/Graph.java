@@ -336,7 +336,7 @@ public class Graph {
             // Recur for all the vertices adjacent to this
             // vertex
             for (int n = 0; n < this.getSize(); n++) {
-                if (!visited[n]) return DFSUtil(origin, destin, n, visited, distance + this.matrix[current][n]);
+                if (!visited[n]) return DFSUtil(origin, destin, n, visited, distance + this.matrix[current][n], limit-1);
             }
             return -1;
         }
