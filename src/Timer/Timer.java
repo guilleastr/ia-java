@@ -35,10 +35,8 @@ public class Timer {
         this.testDFS();
         this.testGreedyFirst();
         this.testDFSIterative();
-
         this.printData();
         this.saveData();
-        
         this.estrella();
 
     }
@@ -51,7 +49,6 @@ public class Timer {
         this.testGreedyFirst();
         this.testDFSIterative();
         this.printData();
-
         this.saveData();
         this.estrella();
 
@@ -82,6 +79,7 @@ public class Timer {
         List<DataRecord> bfs= new ArrayList<DataRecord>();
         List<DataRecord> dfs= new ArrayList<DataRecord>();
         List<DataRecord> dfsi= new ArrayList<DataRecord>();
+        List<DataRecord> gdf= new ArrayList<DataRecord>();
         for (DataRecord dataR : data) {
             switch (dataR.getAlgorithm()){
                 case "BFS":
@@ -90,7 +88,8 @@ public class Timer {
                     dfs.add(dataR);
                 case "DFS-Iterative":
                     dfsi.add(dataR);
-
+                case "GREEDY-FIRST":
+                    gdf.add(dataR);
             }
             System.out.println(dataR.toString());
         }
@@ -107,8 +106,15 @@ public class Timer {
                 correcti++;
             }
         }
+        int correctg=0;
+        for (DataRecord dataR : gdf) {
+            if(dataR.isBestAnswer()){
+                correctg++;
+            }
+        }
         System.out.println("DFS: RATE OF SUCCESS: "+ ((double) correct/dfs.size())*100+"%");
         System.out.println("DFS iterative: RATE OF SUCCESS: "+ ((double) correcti/dfsi.size())*100+"%");
+        System.out.println("GREEDY-FIRST: RATE OF SUCCESS: "+ ((double) correctg/dfsi.size())*100+"%");
 
 
     }
@@ -290,9 +296,9 @@ public class Timer {
                 String label1= graph.getNodes().get(i).getLabel();
                 String label2= graph.getNodes().get(j).getLabel();
 
-                start = System.currentTimeMillis();
+                start = System.nanoTime();
                 int distance = graph.greedyfirst(label1,label2);
-                end = System.currentTimeMillis();
+                end = System.nanoTime();
                 addData(start, end, type, label1, label2, distance);
 
 

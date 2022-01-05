@@ -307,8 +307,8 @@ public class Graph {
     }
 
     public int greedyfirst(String origin, String destination) {
-        int  cost=100000;
-        System.out.println("buscando desde " + origin + " " + destination);
+        int cost=100000;
+        //System.out.println("buscando desde " + origin + " " + destination);
         int start = getNodePos(origin);
         int end = getNodePos(destination);
         int nextRua = -1;
@@ -336,7 +336,7 @@ public class Graph {
         for (int j=0;j<getSize();j++){
             if (matrix[getNodePos(origen)][j]!=0 && visited[j]==false){
                 adyacentes.add(this.nodes.get(j));
-                System.out.println("los nodos adyacentes de "+ origen + " son " + this.nodes.get(j).getLabel());
+               // System.out.println("los nodos adyacentes de "+ origen + " son " + this.nodes.get(j).getLabel());
             }
         }
         //sino hay que seguir buscando segun el camino mas corto

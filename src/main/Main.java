@@ -16,7 +16,7 @@ public class Main {
     public static void main(String[] args) {
         Timer timer= new Timer();
 
-        timer.run(50);
+        timer.run();
         //timer.run(100);
         
         
