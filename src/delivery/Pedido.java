@@ -12,7 +12,7 @@ public class Pedido {
 	private Date date;
 	private double timepoEntrega;
 	
-	public Pedido(String idPedido, double kg,double timepoEntrega, double precio) {
+	public Pedido(String idPedido, double kg, double timepoEntrega, double precio) {
 		super();
 		this.idPedido = idPedido;
 		this.kg = kg;

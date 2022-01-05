@@ -7,17 +7,11 @@ import graph.Graph;
 import java.util.ArrayList;
 import java.util.List;
 
+import Timer.Timer;
+
+
 
 public class Main {
-
-
-
-/*
-    // Tiempos de entrega ---falta la distancia
-    double tiempoBicicleta = graphDistances.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graphDistances.getDistance(null, null));
-    double tiempoMoto = graphDistances.calculaTiempo(moto.getKg(), moto.getNameTransport(), graphDistances.getDistance(null, null));
-    double tiempoCoche = graphDistances.calculaTiempo(coche.getKg(), coche.getNameTransport(), graphDistances.getDistance(null, null));*/
-
     // Generamos los pedidos
     static Pedido pedido1 = new Pedido("p01", 3.50, 1, 40.0);
     static Pedido pedido2 = new Pedido("p02", 30.0, 3, 20.0);
@@ -33,20 +27,22 @@ public class Main {
     public static void main(String[] args) {
         Graph graphDistances = createGraphDistances();
         Graph graphTime =createGraphTimes();
-
         
-        System.out.println(graphDistances.calculateVehicle(entrega1));
-        System.out.println(graphDistances.calculateVehicle(entrega2));
-        System.out.println(graphDistances.calculateVehicle(entrega3));
-        System.out.println(graphDistances.calculateVehicle(entrega4));
+        System.out.println("RESULTS:");
+        System.out.println("Most eficent vehicle for delivery-" + entrega1.getIdEntrega() + " is " + graphDistances.calculateVehicle(entrega1));
+        System.out.println("Most eficent vehicle for delivery-" + entrega2.getIdEntrega() + " is " + graphDistances.calculateVehicle(entrega2));
+        System.out.println("Most eficent vehicle for delivery-" + entrega3.getIdEntrega() + " is " + graphDistances.calculateVehicle(entrega3));
+        System.out.println("Most eficent vehicle for delivery-" + entrega4.getIdEntrega() + " is " + graphDistances.calculateVehicle(entrega4));
 
         List<Entrega> entregas= new ArrayList<>();
         entregas.add(entrega1);
         entregas.add(entrega2);
 
-        System.out.println(graphDistances.sendMultipleEstefeta(new ArrayList<>(entregas)));
-
-        System.out.println(graphDistances.calculateVehicle(entregas));
+        System.out.println("\nThe faster circuit (distances): " + graphDistances.sendMultipleEstefeta(new ArrayList<>(entregas)));
+        System.out.println("Vehicle: " + graphDistances.calculateVehicle(entregas));
+        
+        System.out.println("\nThe ecological circuit (time): " +graphTime.sendMultipleEstefeta(new ArrayList<>(entregas)));
+        System.out.println("Vehicle: " + graphTime.calculateVehicle(entregas));
 
 
     }
