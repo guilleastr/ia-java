@@ -166,6 +166,8 @@ public class Timer {
     }
     
     private void estrella() {
+ 
+        long start, end;
     	NodoEstrela head = new NodoEstrela("GREEN DISTRIBUTION", 5);
         head.g = 0;
 
@@ -195,11 +197,17 @@ public class Timer {
         head.addBranch(18, n9);
         n9.addBranch(7, n6);
 
+        start = System.currentTimeMillis();
         NodoEstrela res = Star.aStar(head, target);
+        end = System.currentTimeMillis();
 
         System.out.println("ESTRELLA");
 
-        Star.printPath(res);
+        long time = end - start;
+
+        Star.printPath(res, time, head.getLabel(), target.getLabel());
+   
+        
     }
     
     private void testDFS() {

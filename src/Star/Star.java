@@ -48,7 +48,7 @@ public class Star {
         return null;
     }
 
-    public static void printPath(NodoEstrela target){
+	public static void printPath(NodoEstrela target, long time, String origin, String destino){
         NodoEstrela n = target;
 
         if(n==null)
@@ -66,6 +66,7 @@ public class Star {
         for(int id : ids){
             System.out.print(id + " ");
         }
+        System.out.print(", timeElapsed=" +  time + ", origin=" + origin  + ", destino=" + destino);
         System.out.println("");
     }
 }
