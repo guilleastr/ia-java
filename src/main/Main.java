@@ -27,7 +27,7 @@ public class Main {
     // Generamos los pedidos
     static Pedido pedido1 = new Pedido("p01", 3.50, 1, 40.0);
     static Pedido pedido2 = new Pedido("p02", 30.0, 3, 20.0);
-    static Pedido pedido3 = new Pedido("p03", 1.0, 2, 40.0);
+    static Pedido pedido3 = new Pedido("p03", 1.0, 10, 40.0);
     static Pedido pedido4 = new Pedido("p04", 30.0, 1, 40.0);
 
     // Generamos las entregas
@@ -42,6 +42,14 @@ public class Main {
         System.out.println(graph.calculateVehicle(entrega2));
         System.out.println(graph.calculateVehicle(entrega3));
         System.out.println(graph.calculateVehicle(entrega4));
+
+        List<Entrega> entregas= new ArrayList<>();
+        entregas.add(entrega1);
+        entregas.add(entrega2);
+
+        System.out.println(graph.sendMultipleEstefeta(new ArrayList<>(entregas)));
+
+        System.out.println(graph.calculateVehicle(entregas));
 
 
     }

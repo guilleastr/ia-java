@@ -52,6 +52,8 @@ public class Graph {
         this.matrix[x][y] = distancia;
         this.matrix[y][x] = distancia;
 
+        floyd();
+
     }
 
     public int getDistance(String label1, String label2) {
@@ -116,19 +118,32 @@ public class Graph {
         String last = ORIGIN;
         while (destins.size() > 0) {
             String next = nextLocation(ORIGIN, destins);
-            destins.remove(next);
+            deleteFromArray(destins, next);
             path.addAll(path(last, next));
             last = next;
         }
+
+        path.addAll(path(last, ORIGIN));
+
         return path;
     }
+
+    private void deleteFromArray(List<Entrega> destins, String next) {
+        Entrega todelete = null;
+        for (Entrega entrega : destins) {
+            if (entrega.getDireccion().equals(next)) ;
+            todelete = entrega;
+        }
+        destins.remove(todelete);
+    }
+
     public int sendMultipleEstefetaDistance(List<Entrega> destins) {
-        int distance=0;
+        int distance = 0;
         String last = ORIGIN;
         while (destins.size() > 0) {
             String next = nextLocation(ORIGIN, destins);
-            destins.remove(next);
-            distance+=minCostPath(last, next);
+            deleteFromArray(destins, next);
+            distance += minCostPath(last, next);
             last = next;
         }
         return distance;
@@ -424,6 +439,24 @@ public class Graph {
 
     }
 
+    public String calculateVehicle(List<Entrega> entregas) {
+
+        double sumaKG = 0;
+
+        int distancia = sendMultipleEstefetaDistance(new ArrayList<>(entregas));
+        double maxTiempoEntrega = 0;
+
+        for (Entrega entrega : entregas) {
+            sumaKG += entrega.getIdPedido().getKg();
+            if (entrega.getIdPedido().getTimepoEntrega() > maxTiempoEntrega) {
+                maxTiempoEntrega = entrega.getIdPedido().getTimepoEntrega();
+            }
+        }
+
+        return findVehicle(sumaKG, distancia, maxTiempoEntrega);
+
+    }
+
     private String findVehicle(double kg, double distancia, double time) {
         if (bicicleta.getsInTime(kg, distancia, time)) {
             return bicicleta.getNameTransport();
@@ -434,7 +467,7 @@ public class Graph {
         if (coche.getsInTime(kg, distancia, time)) {
             return coche.getNameTransport();
         }
-        return "none";
+        return "coche";
     }
 
 
