@@ -16,10 +16,10 @@ public class Main {
     public static void main(String[] args) {
         Timer timer= new Timer();
 
-        timer.run(100);
+        timer.run();
         //timer.run(100);
         
-        
+
 
 
     }

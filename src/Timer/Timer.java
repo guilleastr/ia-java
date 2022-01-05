@@ -9,6 +9,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import Star.NodoEstrela;
+import Star.Star;
+import delivery.Entrega;
+import delivery.Pedido;
+
 public class Timer {
 
     private final static int DEFAULT_GRAPH_SIZE = 9;
@@ -26,12 +31,14 @@ public class Timer {
 
     public void run() {
         this.initGraph();
+        this.initGraphEstrella();
         this.testBFS();
         this.testDFS();
+        this.testGreedyFirst();
         this.testDFSIterative();
         this.printData();
         this.saveData();
-
+        this.estrella();
 
     }
 
@@ -40,10 +47,11 @@ public class Timer {
         initGraph(size);
         this.testBFS();
         this.testDFS();
+        this.testGreedyFirst();
         this.testDFSIterative();
         this.printData();
-
         this.saveData();
+        this.estrella();
 
 
     }
@@ -51,9 +59,10 @@ public class Timer {
 
 
     private void printData() {
-        List<DataRecord> bfs = new ArrayList<DataRecord>();
-        List<DataRecord> dfs = new ArrayList<DataRecord>();
-        List<DataRecord> dfsi = new ArrayList<DataRecord>();
+        List<DataRecord> bfs= new ArrayList<DataRecord>();
+        List<DataRecord> dfs= new ArrayList<DataRecord>();
+        List<DataRecord> dfsi= new ArrayList<DataRecord>();
+        List<DataRecord> gdf= new ArrayList<DataRecord>();
         for (DataRecord dataR : data) {
 
             if (dataR.getAlgorithm().equals("BFS"))
@@ -62,6 +71,8 @@ public class Timer {
                 dfs.add(dataR);
             if (dataR.getAlgorithm().equals("DFS-Iterative"))
                 dfsi.add(dataR);
+            if(dataR.getAlgorithm().equals("GREEDY-FIRST"))
+                gdf.add(dataR);
 
 
             System.out.println(dataR.toString());
@@ -79,8 +90,17 @@ public class Timer {
                 correcti++;
             }
         }
-        System.out.println("DFS: RATE OF SUCCESS: " + ((double) correct / dfs.size()) * 100 + "%");
-        System.out.println("DFS iterative: RATE OF SUCCESS: " + ((double) correcti / dfsi.size()) * 100 + "%");
+        int correctg=0;
+        for (DataRecord dataR : gdf) {
+            if(dataR.isBestAnswer()){
+                correctg++;
+            }
+        }
+        System.out.println("DFS: RATE OF SUCCESS: "+ ((double) correct/dfs.size())*100+"%");
+        System.out.println("DFS iterative: RATE OF SUCCESS: "+ ((double) correcti/dfsi.size())*100+"%");
+        System.out.println("GREEDY-FIRST: RATE OF SUCCESS: "+ ((double) correctg/dfsi.size())*100+"%");
+
+
     }
 
     private void saveData() {
@@ -155,6 +175,82 @@ public class Timer {
         graph.floyd();
     }
 
+    private void initGraphEstrella() {
+
+        System.out.println();
+
+        NodoEstrela head = new NodoEstrela("GREEN DISTRIBUTION", 5);
+        head.g = 0;
+
+        NodoEstrela n2 = new NodoEstrela("AVDA PARIS",4);
+        NodoEstrela n3 = new NodoEstrela("AVDA LIBERDADE",4);
+        NodoEstrela n4 = new NodoEstrela("RUA FONTE",3);
+        NodoEstrela n5 = new NodoEstrela("RUA PORTUGAL", 3);
+        NodoEstrela n6 = new NodoEstrela("AVDA SANTANDER", 2);
+        NodoEstrela n7 = new NodoEstrela("RUA DE MINHO", 1);
+        NodoEstrela target = new NodoEstrela("RUA ESPANHA", 0);
+        NodoEstrela n9 = new NodoEstrela("" + "AVDA BRAGA", 4);
+
+        head.addBranch(12, n2);
+        head.addBranch(20, n3);
+
+        n2.addBranch(30, n5);
+        n2.addBranch(22, n4);
+
+        n4.addBranch(10, n6);
+        n4.addBranch(45, n3);
+
+        n5.addBranch(7, n6);
+
+        n6.addBranch( 9, n7);
+        n7.addBranch(18, target);
+
+        head.addBranch(18, n9);
+        n9.addBranch(7, n6);
+
+        graph.addNodeDirecto(head);
+        graph.addNodeDirecto(n2);
+        graph.addNodeDirecto(n3);
+        graph.addNodeDirecto(n4);
+        graph.addNodeDirecto(n5);
+        graph.addNodeDirecto(n6);
+        graph.addNodeDirecto(n7);
+        graph.addNodeDirecto(target);
+        graph.addNodeDirecto(n9);
+
+    }
+
+    private void estrella() {
+
+        long start, end;
+        final String type= "A*";
+        System.out.println(type);
+
+        System.out.println(graph.getSize());
+        for (int i = 0; i < graph.getSize(); i++) {
+            for (int j = 0; j < graph.getSize(); j++) {
+                if (i == j) continue;
+                NodoEstrela node1 = graph.getNodesEstrella().get(i);
+                NodoEstrela node2 = graph.getNodesEstrella().get(j);
+
+                start = System.currentTimeMillis();
+                NodoEstrela res = Star.aStar(node1, node2);
+                end = System.currentTimeMillis();
+
+
+                long time = end - start;
+
+                Star.printPath(res, time, node1.getLabel(), node2.getLabel());
+
+                /*
+                String label1 = node1.getLabel();
+                String label2 = node2.getLabel();
+
+                addData(start, end, type, label1, label2, 0);*/
+            }
+        }
+    }
+
     private void testDFS() {
         long start, end;
         final String type = "DFS";
@@ -196,6 +292,7 @@ public class Timer {
             }
         }
     }
+
 
     private void testBFS() {
 
@@ -247,9 +344,20 @@ public class Timer {
     Transport bicicleta = new Transport("bicicleta", 25.0, 50.0); 
     Transport moto = new Transport("moto", 75.0, 90.0);
     Transport coche = new Transport("coche", 300.0, 100.0);
-    
+    /*
     // Tiempos de entrega ---falta la distancia
     double tiempoBicicleta = graph.calculaTiempo(bicicleta.getKg(), bicicleta.getNameTransport(), graph.getDistance(null, null));
     double tiempoMoto = graph.calculaTiempo(moto.getKg(), moto.getNameTransport(), graph.getDistance(null, null));
     double tiempoCoche = graph.calculaTiempo(coche.getKg(), coche.getNameTransport(), graph.getDistance(null, null));*/
+
+ // Generamos los pedidos
+    Pedido pedido1 = new Pedido("p01", 5.50, bicicleta, 40.0);
+    Pedido pedido2 = new Pedido("p02", 20.0, moto, 20.0);
+    Pedido pedido3 = new Pedido("p03", 50.0, coche, 40.0);
+
+ // Generamos las entregas
+    Entrega entrega1 = new Entrega("e01", "AVDA BRAGA", pedido1);
+    Entrega entrega2 = new Entrega("e02", "RUA DE MINHO", pedido2);
+    Entrega entrega3 = new Entrega("e03", "RUA FONTE", pedido2);
+    Entrega entrega4 = new Entrega("e04", "AVDA LIBERDADE", pedido3);
 }
